@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 function App() {
   const [latency, setLatency] = useState(43)
@@ -6,17 +6,17 @@ function App() {
   const [accuracy, setAccuracy] = useState(82)
   const [isVerifying, setIsVerifying] = useState(false)
 
-  // MOCK LOGIC: Instead of socket.emit, we simulate the 3SVK Protocol response
+  // 3SVK NAPS Simulation Logic
   const handleFetchData = () => {
-    setData("Analyzing Network...");
+    setData("Analyzing Network Nodes...");
     
-    // Simulate NAPS Logic processing time based on latency
     setTimeout(() => {
       const mockResponse = {
         protocol: "3SVK-NAPS v1.0",
         status: "Success",
-        payload: latency > 200 ? "Optimized (Lightweight)" : "Full Dataset",
+        payload: latency > 200 ? "Optimized (High Latency Strip applied)" : "Full Dataset (Low Latency)",
         verified_by: "Roll: 23X05A6207",
+        node_location: "Hyderabad-Edge-01",
         timestamp: new Date().toLocaleTimeString()
       };
       setData(mockResponse);
@@ -25,7 +25,6 @@ function App() {
 
   const handleMentorVerify = () => {
     setIsVerifying(true);
-    // Simulate RL Engine increasing accuracy after human verification
     setTimeout(() => {
       setAccuracy(prev => Math.min(prev + 2, 98));
       setIsVerifying(false);
@@ -33,18 +32,17 @@ function App() {
   };
 
   return (
-    <div style={{ backgroundColor: '#0b0b0b', color: '#fff', minHeight: '100vh', padding: '40px', fontFamily: 'Inter, sans-serif' }}>
-      <header style={{ borderBottom: '1px solid #333', marginBottom: '30px' }}>
-        <h1 style={{ color: '#00ffaa', margin: 0 }}>⚡ 3SVK (Infinity World)</h1>
-        <p style={{ opacity: 0.8 }}>KAPILA Patent Prototype | Inventor: Siripuram Vinod Kumar | Roll: 23X05A6207</p>
+    <div style={{ backgroundColor: '#0b0b0b', color: '#fff', minHeight: '100vh', padding: '20px', fontFamily: 'Inter, sans-serif' }}>
+      <header style={{ borderBottom: '1px solid #333', marginBottom: '30px', paddingBottom: '10px' }}>
+        <h1 style={{ color: '#00ffaa', margin: 0, fontSize: '24px' }}>⚡ 3SVK (Infinity World)</h1>
+        <p style={{ opacity: 0.8, fontSize: '14px' }}>KAPILA Patent Prototype | Roll: 23X05A6207</p>
       </header>
 
-      <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth > 768 ? '1fr 1fr' : '1fr', gap: '20px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         
-        {/* LEFT PANEL: NAPS LOGIC */}
-        <div style={{ background: '#1a1a1a', padding: '20px', borderRadius: '12px', border: '1px solid #333', boxShadow: '0 4px 20px rgba(0,255,170,0.1)' }}>
-          <h3 style={{ color: '#00ffaa' }}>NAPS Logic (Network-Adaptive)</h3>
-          <p style={{ fontSize: '13px', color: '#888' }}>Detects "Below Earth" network lag and strips non-essential payload data.</p>
+        {/* NAPS LOGIC PANEL */}
+        <div style={{ background: '#1a1a1a', padding: '20px', borderRadius: '12px', border: '1px solid #333' }}>
+          <h3 style={{ color: '#00ffaa', marginTop: 0 }}>NAPS Logic (Network-Adaptive)</h3>
           
           <input 
             type="range" 
@@ -59,30 +57,29 @@ function App() {
           
           <button 
             onClick={handleFetchData} 
-            style={{ background: '#00ffaa', color: '#000', padding: '12px 24px', border: 'none', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', width: '100%' }}
+            style={{ background: '#00ffaa', color: '#000', padding: '12px', border: 'none', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', width: '100%' }}
           >
-            Fetch Data via 3SVK Protocol
+            Fetch Data
           </button>
 
-          <div style={{ marginTop: '20px', background: '#000', padding: '15px', borderRadius: '8px', border: '1px solid #444', height: '140px', overflow: 'auto' }}>
-            <pre style={{ margin: 0, fontSize: '13px', color: '#00ffaa' }}>{JSON.stringify(data, null, 2)}</pre>
+          <div style={{ marginTop: '20px', background: '#000', padding: '15px', borderRadius: '8px', border: '1px solid #444', minHeight: '120px' }}>
+            <pre style={{ margin: 0, fontSize: '12px', color: '#00ffaa', whiteSpace: 'pre-wrap' }}>{data ? JSON.stringify(data, null, 2) : "Ready to fetch..."}</pre>
             {latency > 200 && (
-              <p style={{ color: '#ff4444', fontWeight: 'bold', marginTop: '10px', fontSize: '14px' }}>
-                ⚠️ High latency detected ({latency}ms). NAPS Logic Applied: Stripping Heavy CSS/Assets.
+              <p style={{ color: '#ff4444', fontWeight: 'bold', marginTop: '10px', fontSize: '12px' }}>
+                ⚠️ High latency detected. NAPS applied.
               </p>
             )}
           </div>
         </div>
 
-        {/* RIGHT PANEL: RL ENGINE */}
+        {/* RL ENGINE PANEL */}
         <div style={{ background: '#1a1a1a', padding: '20px', borderRadius: '12px', border: '1px solid #333' }}>
-          <h3 style={{ color: '#fff' }}>RL Engine (Optimized Matching)</h3>
-          <p style={{ fontSize: '13px', color: '#888' }}>Reinforcement Learning validates student skills against industry nodes.</p>
+          <h3 style={{ color: '#fff', marginTop: 0 }}>RL Engine (Optimized Matching)</h3>
           
-          <p>Current System Accuracy: <span style={{ fontSize: '28px', fontWeight: 'bold', color: '#00ffaa' }}>{accuracy}%</span></p>
+          <p>Current Accuracy: <span style={{ fontSize: '24px', fontWeight: 'bold', color: '#00ffaa' }}>{accuracy}%</span></p>
           
-          <div style={{ height: '12px', background: '#333', borderRadius: '6px', overflow: 'hidden', marginBottom: '20px' }}>
-            <div style={{ width: `${accuracy}%`, height: '100%', background: '#00ffaa', transition: 'width 0.8s ease-in-out' }}></div>
+          <div style={{ height: '10px', background: '#333', borderRadius: '5px', overflow: 'hidden', marginBottom: '20px' }}>
+            <div style={{ width: `${accuracy}%`, height: '100%', background: '#00ffaa', transition: 'width 0.8s ease' }}></div>
           </div>
 
           <button 
@@ -91,7 +88,7 @@ function App() {
             style={{ 
               background: isVerifying ? '#444' : '#fff', 
               color: '#000', 
-              padding: '12px 24px', 
+              padding: '12px', 
               border: 'none', 
               borderRadius: '6px', 
               fontWeight: 'bold', 
@@ -101,16 +98,12 @@ function App() {
           >
             {isVerifying ? "Verifying..." : "Verify Task as Mentor"}
           </button>
-          
-          <p style={{ fontSize: '12px', color: '#666', marginTop: '15px', fontStyle: 'italic' }}>
-            *Note: Accuracy increases as Mentor Nodes validate Proof-of-Work.
-          </p>
         </div>
 
       </div>
 
-      <footer style={{ marginTop: '40px', textAlign: 'center', fontSize: '12px', color: '#444' }}>
-        &copy; 2026 3SVK Protocol. All Rights Reserved. Protected by GPL-3.0 Patent License.
+      <footer style={{ marginTop: '30px', textAlign: 'center', fontSize: '11px', color: '#555' }}>
+        Protected by GPL-3.0 Patent License.
       </footer>
     </div>
   )
